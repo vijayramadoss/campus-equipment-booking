@@ -10,6 +10,7 @@ pipeline {
 
         stage('Build & Test') {
             steps {
+                // Replace with your actual path to mvn.cmd if installed locally
                 bat 'mvn clean test'
             }
         }
