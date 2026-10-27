@@ -32,15 +32,17 @@ pipeline {
 
         stage('Deploy to Minikube') {
             steps {
-                // Apply Kubernetes Deployment and Service manifests
-                bat 'kubectl apply -f deployment.yaml'
-                bat 'kubectl apply -f service.yaml'
+                // Load the Docker image into Minikube's local environment
+                bat 'minikube image load campus-equipment-booking:set-a'
+                
+                // Apply Kubernetes manifests with validation disabled to bypass OpenAPI lookup issues
+                bat 'kubectl apply --validate=false -f deployment.yaml'
+                bat 'kubectl apply --validate=false -f service.yaml'
             }
         }
 
         stage('Verify Kubernetes Resources') {
             steps {
-                // Check deployment, pods, and service status
                 bat 'kubectl rollout status deployment/campus-equipment-booking-deployment'
                 bat 'kubectl get pods'
                 bat 'kubectl get svc'
