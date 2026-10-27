@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    tools {
+        maven 'Maven3'
+    }
+
     stages {
         stage('Checkout Code') {
             steps {
@@ -10,7 +14,6 @@ pipeline {
 
         stage('Build & Test') {
             steps {
-                // Replace with your actual path to mvn.cmd if installed locally
                 bat 'mvn clean test'
             }
         }
