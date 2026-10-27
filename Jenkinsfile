@@ -32,10 +32,13 @@ pipeline {
 
         stage('Deploy to Minikube') {
             steps {
+                // Start Minikube cluster
+                bat 'minikube start'
+                
                 // Load the Docker image into Minikube's local environment
                 bat 'minikube image load campus-equipment-booking:set-a'
                 
-                // Apply Kubernetes manifests with validation disabled to bypass OpenAPI lookup issues
+                // Apply Kubernetes manifests with validation disabled
                 bat 'kubectl apply --validate=false -f deployment.yaml'
                 bat 'kubectl apply --validate=false -f service.yaml'
             }
