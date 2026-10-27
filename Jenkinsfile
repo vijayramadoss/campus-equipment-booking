@@ -26,8 +26,24 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                // Builds the Docker image with the required tag for Task 5
                 bat 'docker build -t campus-equipment-booking:set-a .'
+            }
+        }
+
+        stage('Deploy to Minikube') {
+            steps {
+                // Apply Kubernetes Deployment and Service manifests
+                bat 'kubectl apply -f deployment.yaml'
+                bat 'kubectl apply -f service.yaml'
+            }
+        }
+
+        stage('Verify Kubernetes Resources') {
+            steps {
+                // Check deployment, pods, and service status
+                bat 'kubectl rollout status deployment/campus-equipment-booking-deployment'
+                bat 'kubectl get pods'
+                bat 'kubectl get svc'
             }
         }
     }
